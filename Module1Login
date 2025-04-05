@@ -1,0 +1,158 @@
+import java.util.HashMap;
+import java.util.Scanner;
+
+// User class representing different types of users
+abstract class User {
+    protected String username;
+    protected String password;
+    protected String role;
+
+    public User(String username, String password, String role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public boolean authenticate(String password) {
+        return this.password.equals(password);
+    }
+
+    public abstract void displayRole();
+}
+
+// Student class
+class Student extends User {
+    public Student(String username, String password) {
+        super(username, password, "Student");
+    }
+
+    @Override
+    public void displayRole() {
+        System.out.println("Welcome, Student!");
+    }
+}
+
+// Instructor class
+class Instructor extends User {
+    public Instructor(String username, String password) {
+        super(username, password, "Instructor");
+    }
+
+    @Override
+    public void displayRole() {
+        System.out.println("Welcome, Instructor!");
+    }
+}
+
+// Admin class
+class Admin extends User {
+    public Admin(String username, String password) {
+        super(username, password, "Admin");
+    }
+
+    @Override
+    public void displayRole() {
+        System.out.println("Welcome, Admin!");
+    }
+}
+
+// Login System handling user authentication
+class LoginSystem {
+    private HashMap<String, User> users;
+
+    public LoginSystem() {
+        users = new HashMap<>();
+        seedUsers(); // Preload some users
+    }
+
+    private void seedUsers() {
+        users.put("student1", new Student("student1", "pass123"));
+        users.put("instructor1", new Instructor("instructor1", "teach456"));
+        users.put("admin1", new Admin("admin1", "admin789"));
+    }
+
+    public void registerUser(String username, String password, String role) {
+        if (users.containsKey(username)) {
+            System.out.println("Username already exists. Choose another one.");
+            return;
+        }
+        
+        switch (role.toLowerCase()) {
+            case "student":
+                users.put(username, new Student(username, password));
+                break;
+            case "instructor":
+                users.put(username, new Instructor(username, password));
+                break;
+            case "admin":
+                users.put(username, new Admin(username, password));
+                break;
+            default:
+                System.out.println("Invalid role selection!");
+                return;
+        }
+        System.out.println("User registered successfully!");
+    }
+
+    public User loginUser(String username, String password) {
+        if (users.containsKey(username)) {
+            User user = users.get(username);
+            if (user.authenticate(password)) {
+                System.out.println("Login successful!");
+                return user;
+            } else {
+                System.out.println("Incorrect password.");
+            }
+        } else {
+            System.out.println("User not found.");
+        }
+        return null;
+    }
+}
+
+// Main class to handle user interaction
+public class ELearningLoginModule {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        LoginSystem loginSystem = new LoginSystem();
+
+        while (true) {
+            System.out.println("1. Register\n2. Login\n3. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter username: ");
+                    String newUsername = scanner.nextLine();
+                    System.out.print("Enter password: ");
+                    String newPassword = scanner.nextLine();
+                    System.out.print("Enter role (Student/Instructor/Admin): ");
+                    String role = scanner.nextLine();
+                    loginSystem.registerUser(newUsername, newPassword, role);
+                    break;
+                case 2:
+                    System.out.print("Enter username: ");
+                    String username = scanner.nextLine();
+                    System.out.print("Enter password: ");
+                    String password = scanner.nextLine();
+                    User user = loginSystem.loginUser(username, password);
+                    if (user != null) {
+                        user.displayRole();
+                    }
+                    break;
+                case 3:
+                    System.out.println("Exiting... Goodbye!");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice. Try again.");
+            }
+        }
+    }
+}

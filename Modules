@@ -1,0 +1,97 @@
+import java.util.Scanner;
+
+class StudentModule {
+    private Scanner scanner = new Scanner(System.in);
+
+    void start(Student student) {
+        System.out.println("\nWelcome, " + student.username + " (Student)!");
+        while (true) {
+            System.out.println("\n1. View Profile\n2. Take Quiz\n3. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    student.displayProfile();
+                    break;
+
+                case 2:
+                    System.out.println("Taking quiz...");
+                    System.out.println("Quiz completed!");
+                    break;
+
+                case 3:
+                    System.out.println("Exiting...");
+                    return;
+
+                default:
+                    System.out.println("Invalid option.");
+            }
+        }
+    }
+}
+
+class InstructorModule {
+    private Scanner scanner = new Scanner(System.in);
+
+    void start(Instructor instructor) {
+        System.out.println("\nWelcome, " + instructor.username + " (Instructor)!");
+        while (true) {
+            System.out.println("\n1. View Profile\n2. Add Course\n3. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    instructor.displayProfile();
+                    break;
+
+                case 2:
+                    System.out.print("Enter course title: ");
+                    String title = scanner.nextLine();
+                    System.out.println("Course added: " + title);
+                    break;
+
+                case 3:
+                    System.out.println("Exiting...");
+                    return;
+
+                default:
+                    System.out.println("Invalid option.");
+            }
+        }
+    }
+}
+
+class AdminModule {
+    private Scanner scanner = new Scanner(System.in);
+
+    void start(Admin admin) {
+        System.out.println("\nWelcome, " + admin.username + " (Admin)!");
+        while (true) {
+            System.out.println("\n1. View Profile\n2. Manage Users\n3. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    admin.displayProfile();
+                    break;
+
+                case 2:
+                    System.out.println("Managing users...");
+                    break;
+
+                case 3:
+                    System.out.println("Exiting...");
+                    return;
+
+                default:
+                    System.out.println("Invalid option.");
+            }
+        }
+    }
+}

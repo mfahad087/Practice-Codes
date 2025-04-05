@@ -1,0 +1,35 @@
+import java.util.HashMap;
+import java.util.Map;
+
+class AuthService {
+    private Map<String, User> users = new HashMap<>();
+    private int nextId = 1;
+
+    void register(User user) {
+        if (!user.email.matches("^[\\w.-]+@gmail\\.com$")) {
+            System.out.println("Invalid email. Use a valid Gmail.");
+            return;
+        }
+        if (users.containsKey(user.username)) {
+            System.out.println("Username already exists.");
+            return;
+        }
+        users.put(user.username, user);
+        System.out.println("Registration successful for: " + user.username);
+    }
+
+    User login(String username, String password) {
+        User user = users.get(username);
+        if (user != null && user.password.equals(password)) {
+            System.out.println("Login successful as " + user.role + "!");
+            return user;
+        } else {
+            System.out.println("Invalid credentials.");
+            return null;
+        }
+    }
+
+    int getNextId() {
+        return nextId++;
+    }
+}

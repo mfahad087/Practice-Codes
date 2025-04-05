@@ -1,0 +1,50 @@
+abstract class User {
+    String username, password, email, role;
+    int id;
+
+    User(String username, String password, String email, String role, int id) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.id = id;
+    }
+
+    abstract void displayProfile();
+}
+
+class Student extends User {
+    Student(String username, String password, String email, int id) {
+        super(username, password, email, "Student", id);
+    }
+
+    @Override
+    void displayProfile() {
+        System.out.println("Student Profile:");
+        System.out.println("ID: " + id + ", Username: " + username + ", Email: " + email);
+    }
+}
+
+class Instructor extends User {
+    Instructor(String username, String password, String email, int id) {
+        super(username, password, email, "Instructor", id);
+    }
+
+    @Override
+    void displayProfile() {
+        System.out.println("Instructor Profile:");
+        System.out.println("ID: " + id + ", Username: " + username + ", Email: " + email);
+    }
+}
+
+class Admin extends User {
+    Admin(String username, String password, String email, int id) {
+        super(username, password, email, "Admin", id);
+    }
+
+    @Override
+    void displayProfile() {
+        System.out.println("Admin Profile:");
+        System.out.println("ID: " + id + ", Username: " + username + ", Email: " + email);
+    }
+}

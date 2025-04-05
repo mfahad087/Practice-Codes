@@ -1,0 +1,112 @@
+import java.util.HashMap;
+import java.util.Scanner;
+
+// 1. User class (the base class for all users)
+class User {
+    private String username;
+    private String password;
+    private String role;
+    
+    public User(String username, String password, String role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+    
+    // Check if password matches
+    public boolean checkPassword(String inputPassword) {
+        return this.password.equals(inputPassword);
+    }
+    
+    // Display welcome message based on role
+    public void welcome() {
+        System.out.println("Welcome, " + role + "!");
+    }
+    
+    public String getUsername() { return username; }
+    public String getRole() { return role; }
+}
+
+// 2. Login System (handles all login/registration)
+class SimpleLoginSystem {
+    private HashMap<String, User> users = new HashMap<>();
+    
+    // Add some default users
+    public SimpleLoginSystem() {
+        users.put("student1", new User("student1", "pass123", "Student"));
+        users.put("teacher1", new User("teacher1", "teach456", "Teacher"));
+        users.put("admin1", new User("admin1", "admin789", "Admin"));
+    }
+    
+    // Register new user
+    public void register(String username, String password, String role) {
+        if(users.containsKey(username)) {
+            System.out.println("Username taken! Try another.");
+        } else {
+            users.put(username, new User(username, password, role));
+            System.out.println("Registration successful!");
+        }
+    }
+    
+    // Login existing user
+    public User login(String username, String password) {
+        if(users.containsKey(username)) {
+            User user = users.get(username);
+            if(user.checkPassword(password)) {
+                System.out.println("Login successful!");
+                return user;
+            }
+        }
+        System.out.println("Wrong username or password!");
+        return null;
+    }
+}
+
+// 3. Main Program
+public class SimpleSchoolLogin {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        SimpleLoginSystem loginSystem = new SimpleLoginSystem();
+        
+        while(true) {
+            System.out.println("\n1. Register");
+            System.out.println("2. Login");
+            System.out.println("3. Exit");
+            System.out.print("Choose: ");
+            
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Clear the newline
+            
+            switch(choice) {
+                case 1: // Register
+                    System.out.print("Enter username: ");
+                    String regUser = scanner.nextLine();
+                    System.out.print("Enter password: ");
+                    String regPass = scanner.nextLine();
+                    System.out.print("Enter role (Student/Teacher/Admin): ");
+                    String role = scanner.nextLine();
+                    loginSystem.register(regUser, regPass, role);
+                    break;
+                    
+                case 2: // Login
+                    System.out.print("Username: ");
+                    String loginUser = scanner.nextLine();
+                    System.out.print("Password: ");
+                    String loginPass = scanner.nextLine();
+                    User loggedIn = loginSystem.login(loginUser, loginPass);
+                    if(loggedIn != null) {
+                        loggedIn.welcome();
+                    }
+                    break;
+                    
+                case 3: // Exit
+                    System.out.println("Goodbye!");
+                    scanner.close();
+                    return;
+                    
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        }
+    }
+}
